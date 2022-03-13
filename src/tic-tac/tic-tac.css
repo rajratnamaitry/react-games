@@ -1,0 +1,51 @@
+*,*::before,*::after {
+    box-sizing: border-box;
+    font-family: Arial;
+  }
+  body {
+    background-color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-size: 7.5vmin;
+  }
+  #ticTacBoard {
+    --grid-size:3;
+    --cell-size:20vmin;
+    --cell-gap:2;
+    display: grid;
+    grid-template-columns: repeat(var(--grid-size),var(--cell-size));
+    grid-template-rows: repeat(var(--grid-size),var(--cell-size));
+    background-color: #CCC;
+    border-radius: 1vmin;
+    padding: 2vmin;
+    gap:var(--cell-gap);
+    position: relative;
+  }
+  .cell {
+    background-color: #AAA;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: var(--cell-size);
+    height: var(--cell-size);
+    font-weight: bold;
+    background: #aaa;
+    color: hsl(200, 25%, var(--text-lightness));
+    animation: show 200ms ease-in-out;
+    transition: 100ms ease-in-out;
+  }
+  .borderBottom {
+    border-bottom: 1px solid;
+  }
+  .borderLeft {
+    border-left: 1px solid;
+  }
+  @keyframes show {
+    0% {
+      opacity: .5;
+      transform: scale(0);
+    }
+  }
