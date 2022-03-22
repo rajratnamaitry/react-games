@@ -105,7 +105,7 @@ export default function Tictac() {
     }
     let count = 0;
     return (
-        <div>
+        <div className='m-20' >
             {<div className='alert info'>{player}</div>}
             {dialogData.type ?
                 <div className={dialogData.className} >
