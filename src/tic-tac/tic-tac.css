@@ -12,7 +12,7 @@
   }
   #ticTacBoard {
     --grid-size:3;
-    --cell-size:20vmin;
+    --cell-size:25vmin;
     --cell-gap:2;
     display: grid;
     grid-template-columns: repeat(var(--grid-size),var(--cell-size));
@@ -23,7 +23,7 @@
     gap:var(--cell-gap);
     position: relative;
   }
-  .cell {
+  .tCell {
     background-color: #AAA;
     position: relative;
     display: flex;

@@ -115,7 +115,7 @@ export default function Tictac() {
             <button onClick={setNewGame}> new game </button>
             <div id="ticTacBoard" >
                 {gridArray.map((el, index) => el.map((cl, rowIndex) => {
-                    let className = "cell ";
+                    let className = "tCell ";
                     className += gridArray[index][rowIndex].className;
                     className += index === gridArray.length - 1 ? '' : ' borderBottom ';
                     className += rowIndex === 0 ? '' : ' borderLeft';
