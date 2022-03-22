@@ -1,6 +1,6 @@
 # Getting Started with Create React App
 
-# https://reactgames-39aeb.web.app/
+# https://reactgames-39aeb.firebaseapp.com/
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
