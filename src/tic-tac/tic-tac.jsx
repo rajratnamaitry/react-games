@@ -105,14 +105,14 @@ export default function Tictac() {
     }
     let count = 0;
     return (
-        <div className='m-20' >
+        <div className='mTop'>
             {<div className='alert info'>{player}</div>}
             {dialogData.type ?
                 <div className={dialogData.className} >
                     <strong>{dialogData.msg}</strong>
                 </div>
                 :<div></div>}
-            <button onClick={setNewGame}> new game </button>
+            <button onClick={setNewGame} className="button1"> New Game </button>
             <div id="ticTacBoard" >
                 {gridArray.map((el, index) => el.map((cl, rowIndex) => {
                     let className = "tCell ";

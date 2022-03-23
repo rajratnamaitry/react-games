@@ -1,21 +1,24 @@
+import { Routes ,Route , NavLink } from "react-router-dom";
 import Tictac from "./tic-tac/tic-tac";
+import Wordle from "./wordle/wordle";
+import Memory from "./memory/memory";
 import Tiles from "./2048/tiles";
 import './App.css'
-import { useState } from 'react';
 function App() {
-  const [game, setGame] = useState('tictac');
-  const handleClick = (e) => {
-    const caseName = e.target.getAttribute('data-game');
-    setGame(caseName)
-  }
   return (
     <div className="App">
       <ul>
-        <li><div className="active" data-game="tictac" onClick={handleClick}>Tictac</div></li>
-         <li><div data-game="2048" onClick={handleClick} >2048 Game</div></li>
-         <li><div data-game="memo" onClick={handleClick} >Memory Game</div></li>
+        <li><NavLink  data-game="tictac" to="/">Tictac</NavLink></li>
+         <li><NavLink data-game="2048" to="tiles" >2048 Game</NavLink></li>
+         <li><NavLink data-game="wordle" to="wordle" >Wordle</NavLink></li>
+         <li><NavLink data-game="memo" to="/memo" >Memory Game</NavLink></li>
       </ul>
-      { game === 'tictac' ? <Tictac></Tictac> : <Tiles></Tiles> }
+      <Routes>
+        <Route path="/" element={<Tictac/>} ></Route>
+        <Route path="tiles" element={<Tiles/>} ></Route>
+        <Route path="wordle" element={<Wordle/>} ></Route>
+        <Route path="memo" element={<Memory/>} ></Route>
+      </Routes>
     </div>
   );
 }
