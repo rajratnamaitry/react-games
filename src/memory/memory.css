@@ -1,0 +1,38 @@
+.grid {
+    width: 332px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border: 1px solid white;
+}
+.gridCell {
+    padding: 15px;
+    font-size: 60px;
+    width: 110px;
+    height: 110px;
+    border: 1px solid;
+    color: white;
+}
+.gridCellFlip {
+    animation: show 200ms ease-in-out;
+    transition: 200ms ease-in-out;
+}
+.gridCellFlipOut {
+    animation: show 200ms ease-out;
+    transition: 200ms ease-out;
+}
+@keyframes show {
+    0% {
+      opacity: .5;
+      transform: scale(0);
+    }
+}
+.invisiable {
+    visibility: hidden;
+}
+.disabledClick {
+    cursor: no-drop;
+}
+.m20 {
+    margin-top: 20px;
+}

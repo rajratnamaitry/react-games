@@ -11,16 +11,17 @@ function App() {
     <div className="pt-20">
       <ul>
         <li><NavLink data-game="tictac" to="tictac">Tictac</NavLink></li>
-        <li><NavLink data-game="2048" to="tiles" >2048 Game</NavLink></li>
-        <li><NavLink data-game="wordle" to="wordle" >Wordle</NavLink></li>
         <li><NavLink data-game="memo" to="memo" >Memory Game</NavLink></li>
+        {/* <li><NavLink data-game="2048" to="tiles" >2048 Game</NavLink></li>
+        <li><NavLink data-game="wordle" to="wordle" >Wordle</NavLink></li> */}
       </ul>
       <Switch>
-        <Route path={["/","/tictac"]} component={Tictac} />
-        <Route path="/wordle" component={Wordle} exact />
-        <Route path="/memory" component={Memory} exact />
-        <Route path="/tiles" component={Tiles} exact />
+        <Route path={["/","/tictac"]} component={Tictac} exact/>
+        <Route path="/memo" component={Memory} exact />
+        {/* <Route path="/wordle" component={Wordle} exact /> */}
+        {/* <Route path="/tiles" component={Tiles} exact /> */}
       </Switch>
+
     </div>
     </BrowserRouter>
    );
