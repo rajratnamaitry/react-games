@@ -112,7 +112,9 @@ export default function Tictac() {
                     <strong>{dialogData.msg}</strong>
                 </div>
                 :<div></div>}
-            <button onClick={setNewGame} className="btnSuccess"> New Game </button>
+                <div className='displayFlex'>
+                    <button onClick={setNewGame} className="btnSuccess"> New Game </button>
+                </div>
             <div id="ticTacBoard" >
                 {gridArray.map((el, index) => el.map((cl, rowIndex) => {
                     let className = "tCell ";
