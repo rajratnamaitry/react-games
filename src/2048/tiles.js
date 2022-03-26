@@ -1,4 +1,4 @@
-import './tiles.css';
+// import './tiles.css';
 import Grid from "./Grid.ts"
 import Tile from "./Tile.js"
 

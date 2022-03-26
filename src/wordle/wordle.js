@@ -1,4 +1,6 @@
 import React from 'react'
+import './wordle.css'
+
 import { useState } from 'react';
 export default function Wordle() {
     const defaultMessage = ' Using word of the day instead.'
@@ -13008,26 +13010,33 @@ export default function Wordle() {
     ]
 
     const allWords = [...answers, ...allowedGuesses]
-    let currentRow = [];
-    let board = [];
-    let answer = getWordOfTheDay()
-    const [rows, setRows] = useState([
-        'qwertyuiop'.split(''),
-        'asdfghjkl'.split(''),
-        ['Enter', ...'zxcvbnm'.split(''), 'Backspace']
-    ])
-    let allowInput = true
     let letterStates = {
         INITIAL: 0,
         CORRECT: 'correct',
         PRESENT: 'present',
         ABSENT: 'absent'
     };
+    let boardArray = Array.from({ length: 6 }, () =>
+        Array.from({ length: 5 }, () => ({
+            letter: '',
+            state: letterStates.INITIAL
+        }))
+    );
+    const [board, setBoard] = useState(boardArray);
+    const [answer, setAnswer] = useState(getWordOfTheDay());
+    const [grid, setGrid] = useState('');
+    const [currentRow, setCurrentRow] = useState([]);
+    const [message, setMessage] = useState('');
+    const [shakeRowIndex, setShakeRowIndex] = useState(0);
+    const [success, setSuccess] = useState(false);
+    const [rows, setRows] = useState([
+        'qwertyuiop'.split(''),
+        'asdfghjkl'.split(''),
+        ['Enter', ...'zxcvbnm'.split(''), 'Backspace']
+    ])
+    let allowInput = true
+
     let currentRowIndex = 0;
-    let grid;
-    let success;
-    let shakeRowIndex;
-    let message;
     let icons = {
         [letterStates.CORRECT]: '🟩',
         [letterStates.PRESENT]: '🟨',
@@ -13035,7 +13044,8 @@ export default function Wordle() {
         [letterStates.INITIAL]: null
     }
     const keyClick = (e) => {
-        const key = e.target.getAttribuilt('data-key')
+        const key = e.target.getAttribute('data-key')
+        console.log('key', key)
         if (!allowInput) return
         if (/^[a-zA-Z]$/.test(key)) {
             fillTile(key.toLowerCase())
@@ -13102,15 +13112,15 @@ export default function Wordle() {
             if (currentRow.every((tile) => tile.state === letterStates.CORRECT)) {
                 // yay!
                 setTimeout(() => {
-                    grid = genResultGrid()
+                    setGrid(genResultGrid())
                     showMessage(
                         { msg: ['Genius', 'Magnificent', 'Impressive', 'Splendid', 'Great', 'Phew'][currentRowIndex], time: -1 })
-                    success = true
+                    setSuccess(true)
                 }, 1600)
             } else if (currentRowIndex < board.length - 1) {
                 // go the next row
                 currentRowIndex++
-                currentRow = board[currentRowIndex];
+                setCurrentRow(board[currentRowIndex]);
                 setTimeout(() => {
                     allowInput = true
                 }, 1600)
@@ -13126,7 +13136,6 @@ export default function Wordle() {
         }
     }
     const genResultGrid = () => {
-
         return board.slice(0, currentRowIndex + 1)
             .map((row) => {
                 return row.map((tile) => icons[tile.state]).join('')
@@ -13134,53 +13143,86 @@ export default function Wordle() {
             .join('\n')
     }
     const shake = () => {
-        shakeRowIndex = currentRowIndex;
+        setShakeRowIndex(currentRowIndex);
         setTimeout(() => {
-            shakeRowIndex = -1
+            setShakeRowIndex(-1)
         }, 1000)
     }
     const showMessage = ({ msg, time = 1000 }) => {
-        message = msg
+        setMessage(msg)
         if (time > 0) {
             setTimeout(() => {
-                message = ''
+                setMessage('')
             }, time)
         }
     }
     return (
-        <div id="keyboard">
-            {message &&
-                <div class="message">
-                    {message}
-                    {grid && <pre>{grid}</pre>}
-                </div>}
-            {rows.map((row, i) =>
-                <div class="row">
-                    {i === 1 && <div class="spacer"></div>}
-                    {row.map((key, j) => {
-                        let className = letterStates[key];
-                        className += key.length > 1 && 'big';
-                        return <button className={className} data-key={key} onclick={keyClick} >
-                            {key !== 'Backspace' && <span >{key}</span>}
-                            {key === 'Backspace' &&
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    width="24"
-                                >
-                                    <path
-                                        fill="currentColor"
-                                        d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7.07L2.4 12l4.66-7H22v14zm-11.59-2L14 13.41 17.59 17 19 15.59 15.41 12 19 8.41 17.59 7 14 10.59 10.41 7 9 8.41 12.59 12 9 15.59z"
-                                    ></path>
-                                </svg>
+        <div>
+            <div id="board">
+                {board.map((row, i) => {
+                    let className = 'row success';
+                    className += shakeRowIndex === i ? ' shake' : '';
+                    className += currentRowIndex === i ? ' jump' : '';
+                    return <div key={i} className={className}>
+                        {row.map((tile, j) => {
+                            let className = "tile";
+                            className += tile.letter ? " filled": "";
+                            className += tile.state ? " revealed" : "";
+                            const style = { 'transitionDelay': i * 300 + 'ms' };
+                            let classNameBack = "back";
+                            classNameBack += " "+tile.state;
+                            const ngStyle = {
+                                'transitionDelay': i * 300 + 'ms',
+                                'animationDelay': i * 100 + 'ms'
                             }
-                        </button>
-                    }
-                    )}
-                </div>
-            )
-            }
+                            return <div className={className} key={j} >
+                                <div className="front" style={style} >
+                                    {tile.letter}
+                                </div>
+                                <div
+                                    className={classNameBack}
+                                    style={ngStyle} >
+                                    {tile.letter}
+                                </div>
+                            </div>
+                        })}
+                    </div>
+                })}
+            </div>
+            <div id="keyboard">
+                {message &&
+                    <div className="message">
+                        {message}
+                        {grid && <pre>{grid}</pre>}
+                    </div>}
+                {rows.map((row, i) =>
+                    <div className="row" key={i} >
+                        {i === 1 && <div className="spacer"></div>}
+                        {row.map((key, j) => {
+                            let className = letterStates[key] || '';
+                            className += key.length > 1 ? 'big' : '';
+                            return <button className={className} data-key={key} key={key} onClick={keyClick} >
+                                {key !== 'Backspace' && <span data-key={key} >{key}</span>}
+                                {key === 'Backspace' &&
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        width="24"
+                                    >
+                                        <path
+                                            fill="currentColor"
+                                            d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7.07L2.4 12l4.66-7H22v14zm-11.59-2L14 13.41 17.59 17 19 15.59 15.41 12 19 8.41 17.59 7 14 10.59 10.41 7 9 8.41 12.59 12 9 15.59z"
+                                        ></path>
+                                    </svg>
+                                }
+                            </button>
+                        }
+                        )}
+                    </div>
+                )
+                }
+            </div >
         </div >
 
     )
