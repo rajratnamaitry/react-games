@@ -52,6 +52,7 @@
 
 .tooltip .tooltiptext {
   width: 235px;
+  font-size: 22px;
   background-color: #eee;
   color: #333;
   text-align: center;
