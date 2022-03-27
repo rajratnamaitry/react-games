@@ -1,5 +1,10 @@
 import React, { useState } from 'react'
-import './memory.css'
+import './memory.css';
+const longText = `
+Aliquam eget finibus ante, non facilisis lectus. Sed vitae dignissim est, vel aliquam tellus.
+Praesent non nunc mollis, fermentum neque at, semper arcu.
+Nullam eget est sed sem iaculis gravida eget vitae justo.
+`;
 export default function Memory() {
   const GRID_SIZE = 12;
   const CURRENT = 'current';
@@ -68,8 +73,10 @@ export default function Memory() {
       e.innerText = '';
       e.classList.remove(DISABLED_CLICK);
     })
+    setIsVisible(false)
   }
   const [isWinner, setIsWinner] = useState(false);
+  const [isVisaible, setIsVisible] = useState(true);
   const [board, setBoard] = useState(newGridArray);
   let [cellCounter, setCellcounter] = useState(0);
   const handleCellClickFn = (e) => {
@@ -87,11 +94,14 @@ export default function Memory() {
     target.innerText = target.getAttribute('data-value');
   }
   return (
-    <div>
+    <div id="memoryBox" >
+        { isVisaible ? <div className="tooltip m165">
+          <span className="tooltiptext">Memorize emoji and click on start game</span>
+        </div> : ''}
       {isWinner ? <div className='m20 alert success'>{'Winner'}</div> : ''}
       <div className='displayFlex'>
-        <button onClick={setNewGame} className="btnSuccess"> Start Game </button>
         <button onClick={() => window.location.reload()} className="btnSuccess"> New Game </button>
+        <button onClick={setNewGame} className="btnSuccess"> Start Game </button>
       </div>
       <div id="memoryBoard" className='grid'>
         {board.map((cell, i) => {
